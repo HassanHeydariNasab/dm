@@ -61,7 +61,7 @@ class Matrix:
                 result.m[j][i] = self.m[i][j]
         return result
 
-    def __or__(self, other: object):
+    def __and__(self, other: object):
         if isinstance(other, Matrix):
             if self.r != other.r or self.c != other.c:
                 raise ArithmeticError(
@@ -70,14 +70,14 @@ class Matrix:
             result: Matrix = Matrix([[False] * self.c for _ in range(self.r)])
             for i in range(self.r):
                 for j in range(self.c):
-                    result.m[i][j] = self.m[i][j] or other.m[i][j]
+                    result.m[i][j] = self.m[i][j] and other.m[i][j]
             return result
         else:
             raise ArithmeticError(
                 "Can't meet to object of type " + type(other).__name__
             )
 
-    def __and__(self, other: object):
+    def __or__(self, other: object):
         if isinstance(other, Matrix):
             if self.r != other.r or self.c != other.c:
                 raise ArithmeticError(
@@ -86,7 +86,7 @@ class Matrix:
             result: Matrix = Matrix([[False] * self.c for _ in range(self.r)])
             for i in range(self.r):
                 for j in range(self.c):
-                    result.m[i][j] = self.m[i][j] and other.m[i][j]
+                    result.m[i][j] = self.m[i][j] or other.m[i][j]
             return result
         else:
             raise ArithmeticError(
