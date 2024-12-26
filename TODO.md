@@ -1,12 +1,12 @@
 # TODO
 
 - [] UI
-  - [] input
+  - [x] input
   - [] CLI menu
   - [] graphical output
 - [] Rn graph
-- [] join
-- [] meet
+- [x] join
+- [x] meet
 - [] closures
   - [] reflexive
   - [] symmetric

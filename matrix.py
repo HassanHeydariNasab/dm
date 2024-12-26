@@ -35,6 +35,10 @@ class Matrix:
                         )
                     result.m[i][j] = sum
             return result
+        else:
+            raise ArithmeticError(
+                "Can't multiply Matrix with object of type " + type(other).__name__
+            )
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Matrix):
@@ -45,9 +49,10 @@ class Matrix:
                     if self.m[i][j] != other.m[i][j]:
                         return False
             return True
-        raise ArithmeticError(
-            "Can't compare Matrix with object of type " + type(other).__name__
-        )
+        else:
+            raise ArithmeticError(
+                "Can't compare Matrix with object of type " + type(other).__name__
+            )
 
     def transposed(self):
         result: Matrix = Matrix([[False] * self.r for _ in range(self.c)])
@@ -55,6 +60,38 @@ class Matrix:
             for j in range(self.c):
                 result.m[j][i] = self.m[i][j]
         return result
+
+    def __or__(self, other: object):
+        if isinstance(other, Matrix):
+            if self.r != other.r or self.c != other.c:
+                raise ArithmeticError(
+                    "Can't meet with a matrix with incompatible dimensions"
+                )
+            result: Matrix = Matrix([[False] * self.c for _ in range(self.r)])
+            for i in range(self.r):
+                for j in range(self.c):
+                    result.m[i][j] = self.m[i][j] or other.m[i][j]
+            return result
+        else:
+            raise ArithmeticError(
+                "Can't meet to object of type " + type(other).__name__
+            )
+
+    def __and__(self, other: object):
+        if isinstance(other, Matrix):
+            if self.r != other.r or self.c != other.c:
+                raise ArithmeticError(
+                    "Can't join with a matrix with incompatible dimensions"
+                )
+            result: Matrix = Matrix([[False] * self.c for _ in range(self.r)])
+            for i in range(self.r):
+                for j in range(self.c):
+                    result.m[i][j] = self.m[i][j] and other.m[i][j]
+            return result
+        else:
+            raise ArithmeticError(
+                "Can't join to object of type " + type(other).__name__
+            )
 
     def is_reflexive(self) -> bool:
         if self.r != self.c:
