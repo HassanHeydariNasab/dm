@@ -10,7 +10,12 @@ class Matrix:
         self.c = 0 if self.r == 0 else len(matrix[0])
 
     def __repr__(self):
-        return str(self.m)
+        result = ""
+        for i in range(self.r):
+            for j in range(self.c):
+                result += "1" if self.m[i][j] else "0"
+            result += "\n"
+        return result
 
     def __mul__(self, other):
         if isinstance(other, bool):
