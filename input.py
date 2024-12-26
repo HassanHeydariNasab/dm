@@ -1,23 +1,30 @@
-from properties_of_relations import is_reflexive
+from matrix import Matrix
 
-matrix = []
+m = []
 longestRow = 0
 
+print(
+    """Enter a binary matrix (enter 0 and 1 without any delimiters,
+one row at a time. Enter an empty line when it's done."""
+)
+
 while True:
-    rowInput = input(f"Enter row {len(matrix)+1}: ")
+    rowInput = input()
     if rowInput == "":
         break
-    row = [bool(s) for s in rowInput.split(" ")]
+    row = [bool(int(s)) for s in rowInput]
     if len(row) > longestRow:
         longestRow = len(row)
-    matrix.append(row)
+    m.append(row)
 
-# fill short rows with zero
-for row in matrix:
+# make the matrix square by filling rows with zero
+for row in m:
     if len(row) < longestRow:
         row += [False] * (longestRow - len(row))
-while len(matrix) < longestRow:
-    matrix.append([False] * longestRow)
+while len(m) < longestRow:
+    m.append([False] * longestRow)
+
+matrix = Matrix(m)
 
 print(matrix)
-print("is_reflexive:", is_reflexive(matrix))
+print("is_reflexive:", matrix.is_reflexive())

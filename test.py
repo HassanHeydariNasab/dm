@@ -86,6 +86,7 @@ assert m2.is_reflexive()
 assert m2.is_symmetric()
 assert m2.is_antisymmetric()
 assert m2.is_transitive()
+assert m2.is_equivalent()
 
 assert not m3.is_reflexive()
 assert m3.is_symmetric()

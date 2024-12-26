@@ -49,13 +49,30 @@ class Matrix:
             "Can't compare Matrix with object of type " + type(other).__name__
         )
 
+    def transposed(self):
+        result: Matrix = Matrix([[False] * self.r for _ in range(self.c)])
+        for i in range(self.r):
+            for j in range(self.c):
+                result.m[j][i] = self.m[i][j]
+        return result
+
     def is_reflexive(self) -> bool:
+        if self.r != self.c:
+            return False
+
         for i in range(len(self.m)):
             if not self.m[i][i]:
                 return False
         return True
 
     def is_symmetric(self) -> bool:
+        """
+        Another method to check whether a matrix is symmetric could be
+        calculating the transposed matrix (which is O(n2)) then check
+        if both are equal (another O(n2)).
+        """
+        if self.r != self.c:
+            return False
         for i in range(len(self.m)):
             for j in range(len(self.m)):
                 if self.m[i][j] != self.m[j][i]:
@@ -63,6 +80,14 @@ class Matrix:
         return True
 
     def is_antisymmetric(self) -> bool:
+        """
+        Another method to check whether a matrix is anti-symmetric could be
+        calculating the transposed matrix (which is O(n2)) and then check
+        if meet of the original matrix and the transposed one is less than
+        or equal to I (another O(n2)).
+        """
+        if self.r != self.c:
+            return False
         for i in range(len(self.m)):
             for j in range(len(self.m)):
                 if self.m[i][j] and self.m[j][i] and i != j:
@@ -70,6 +95,13 @@ class Matrix:
         return True
 
     def is_transitive(self) -> bool:
+        """
+        Another method to check whether a matrix is transitive could be
+        calculating the product of the matrix and itself (which is O(n3)) and then check
+        if it's less than or equal to the original matrix (O(n2)).
+        """
+        if self.r != self.c:
+            return False
         for i in range(len(self.m)):
             for j in range(len(self.m)):
                 for k in range(len(self.m)):
@@ -77,5 +109,5 @@ class Matrix:
                         return False
         return True
 
-    def is_transitive2(self) -> bool:
-        return True
+    def is_equivalent(self) -> bool:
+        return self.is_reflexive() and self.is_symmetric() and self.is_transitive()
