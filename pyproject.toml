@@ -7,7 +7,7 @@ packages = ["src/hassan_in_matrix"]
 
 [project]
 name = "hassan_in_matrix"
-version = "0.0.3"
+version = "0.0.5"
 authors = [{ name = "Hassan Heydari Nasab", email = "hsn6@tuta.io" }]
 description = "Binary matrices for discrete mathematics"
 readme = "README.md"

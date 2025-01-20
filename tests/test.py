@@ -1,4 +1,4 @@
-from matrix import Matrix
+from ..src.hassan_in_matrix.matrix import Matrix
 
 m1 = Matrix(
     [

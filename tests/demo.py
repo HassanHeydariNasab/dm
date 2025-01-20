@@ -1,4 +1,4 @@
-from utils import input_matrix
+from ..src.hassan_in_matrix.utils import input_matrix
 
 print("DM v1.0.0 by Hassan Heydari Nasab")
 print("License: WTFPL")

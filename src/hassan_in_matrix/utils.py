@@ -1,4 +1,4 @@
-from matrix import Matrix
+from .matrix import Matrix
 
 
 def input_matrix(square: bool = False) -> Matrix:
