@@ -5,9 +5,20 @@ class Matrix:
             for i in range(len(matrix)):
                 if len(matrix[i]) != cols:
                     raise ValueError("Malformed matrix")
-        self.m = matrix
-        self.r = len(matrix)
-        self.c = 0 if self.r == 0 else len(matrix[0])
+        self.m = matrix  # matrix entries
+        self.r = len(matrix)  # number of rows
+        self.c = 0 if self.r == 0 else len(matrix[0])  # number of columns
+
+    @classmethod
+    def Zero(cls, r: int, c: int):
+        return Matrix([[False] * c for _ in range(r)])
+
+    @classmethod
+    def Identity(cls, n: int):
+        result: Matrix = Matrix.Zero(n, n)
+        for i in range(n):
+            result.m[i][i] = True
+        return result
 
     def __repr__(self):
         result = ""
@@ -30,7 +41,7 @@ class Matrix:
                 raise ArithmeticError(
                     "Can't multiply Matrix with incompatible dimensions"
                 )
-            result: Matrix = Matrix([[False] * self.c for _ in range(other.r)])
+            result: Matrix = Matrix.Zero(self.r, self.c)
             for i in range(self.r):
                 for j in range(other.c):
                     sum = False
@@ -44,6 +55,15 @@ class Matrix:
             raise ArithmeticError(
                 "Can't multiply Matrix with object of type " + type(other).__name__
             )
+
+    def __pow__(self, power: int):
+        if power < 1:
+            raise ArithmeticError("Can't raise a matrix to a non-positive power.")
+        result = self
+        for _ in range(power - 1):
+            result = result.__mul__(self)
+        return result
+        # TODO: cache
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Matrix):
@@ -60,7 +80,7 @@ class Matrix:
             )
 
     def transposed(self):
-        result: Matrix = Matrix([[False] * self.r for _ in range(self.c)])
+        result: Matrix = Matrix.Zero(self.r, self.c)
         for i in range(self.r):
             for j in range(self.c):
                 result.m[j][i] = self.m[i][j]
@@ -153,3 +173,48 @@ class Matrix:
 
     def is_equivalent(self) -> bool:
         return self.is_reflexive() and self.is_symmetric() and self.is_transitive()
+
+    def reflexive_closure(self):
+        if self.c != self.r:
+            raise ArithmeticError(
+                "Can't calculate the reflexive closure for non-square matrix."
+            )
+        identity = Matrix.Identity(self.r)
+        return self.__or__(identity)
+
+    def symmetric_closure(self):
+        if self.c != self.r:
+            raise ArithmeticError(
+                "Can't calculate the symmetric closure for non-square matrix."
+            )
+        return self.__or__(self.transposed())
+
+    def transitive_closure(self):
+        if self.c != self.r:
+            raise ArithmeticError(
+                "Can't calculate the transitive closure for non-square matrix."
+            )
+        result = self
+        for i in range(2, self.r + 1):
+            result = result.__or__(self.__pow__(i))
+        return result
+
+    def transitive_closure_using_warshall_alg(self):
+        if self.c != self.r:
+            raise ArithmeticError(
+                "Can't calculate the transitive closure for non-square matrix."
+            )
+        w = self
+        for _ in range(0, self.r + 1):
+            p = []
+            q = []
+            for i in range(self.c):
+                for j in range(self.r):
+                    if self.m[j][i]:
+                        p.append(j)
+                    if self.m[i][j]:
+                        q.append(i)
+            entries_to_be_one = [(pi, qi) for pi in p for qi in q if self.m[pi][qi]]
+            for entry in entries_to_be_one:
+                w.m[entry[0]][entry[1]] = True
+        return w
