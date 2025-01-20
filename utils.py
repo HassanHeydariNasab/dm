@@ -6,8 +6,7 @@ def input_matrix(square: bool = False) -> Matrix:
     longestRow = 0
 
     print(
-        """Enter a binary matrix. Enter 0 and 1 without any delimiters,
-    one row at a time. Enter an empty line when it's done."""
+        "Enter a binary matrix using 0 and 1 without any delimiters, and press Enter for each row. Press another Enter when it's done."
     )
 
     while True:
@@ -20,7 +19,7 @@ def input_matrix(square: bool = False) -> Matrix:
         m.append(row)
 
     if square:
-        # make the matrix square by filling rows with zero
+        # Make the matrix square by filling rows with zero
         for row in m:
             if len(row) < longestRow:
                 row += [False] * (longestRow - len(row))

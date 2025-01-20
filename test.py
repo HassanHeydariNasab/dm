@@ -64,6 +64,22 @@ assert m1.is_transitive()
 assert m1 == m1
 assert m5 == m6
 assert m6 != m7
+assert m1 | m5 == Matrix(
+    [
+        [False, True, False, False],
+        [False, True, True, False],
+        [True, False, True, False],
+        [False, False, False, True],
+    ]
+)
+assert m1 & m5 == Matrix(
+    [
+        [False, False, False, False],
+        [False, False, False, False],
+        [False, False, False, False],
+        [False, False, False, True],
+    ]
+)
 assert (m1 * True) == m1
 assert m1 * m1 == m1
 assert m2 * m2 == m2
@@ -98,6 +114,7 @@ assert m3.is_symmetric()
 assert not m3.is_antisymmetric()
 assert not m3.is_transitive()
 assert m3.transitive_closure().is_transitive()
+assert m3.transitive_closure_using_warshall_alg().is_transitive()
 
 assert m4.is_reflexive()
 assert m4.reflexive_closure() == m4
@@ -113,3 +130,6 @@ assert m5.symmetric_closure().is_symmetric()
 assert m5.is_antisymmetric()
 assert not m5.is_transitive()
 assert m5.transitive_closure().is_transitive()
+assert m5.transitive_closure_using_warshall_alg().is_transitive()
+
+print("All tests passed!")

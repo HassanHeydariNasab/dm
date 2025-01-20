@@ -2,13 +2,13 @@
 
 - [] UI
   - [x] input
-  - [] CLI menu
+  - [x] CLI menu
   - [] graphical output
-- [] Rn graph
+- [x] Rn
 - [x] join
 - [x] meet
-- [] closures
-  - [] reflexive
-  - [] symmetric
-  - [] transitive
-- [] Floyd-Warshall algorithm
+- [x] closures
+  - [x] reflexive
+  - [x] symmetric
+  - [x] transitive
+  - [x] Floyd-Warshall algorithm
