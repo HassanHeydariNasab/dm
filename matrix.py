@@ -9,6 +9,9 @@ class Matrix:
         self.r = len(matrix)  # number of rows
         self.c = 0 if self.r == 0 else len(matrix[0])  # number of columns
 
+    def clone(self):
+        return Matrix([[*r] for r in self.m])
+
     @classmethod
     def Zero(cls, r: int, c: int):
         return Matrix([[False] * c for _ in range(r)])
@@ -92,7 +95,7 @@ class Matrix:
                 raise ArithmeticError(
                     "Can't meet with a matrix with incompatible dimensions"
                 )
-            result: Matrix = Matrix([[False] * self.c for _ in range(self.r)])
+            result: Matrix = Matrix.Zero(self.r, self.c)
             for i in range(self.r):
                 for j in range(self.c):
                     result.m[i][j] = self.m[i][j] and other.m[i][j]
@@ -108,7 +111,7 @@ class Matrix:
                 raise ArithmeticError(
                     "Can't join with a matrix with incompatible dimensions"
                 )
-            result: Matrix = Matrix([[False] * self.c for _ in range(self.r)])
+            result: Matrix = Matrix.Zero(self.r, self.c)
             for i in range(self.r):
                 for j in range(self.c):
                     result.m[i][j] = self.m[i][j] or other.m[i][j]
@@ -180,14 +183,14 @@ class Matrix:
                 "Can't calculate the reflexive closure for non-square matrix."
             )
         identity = Matrix.Identity(self.r)
-        return self.__or__(identity)
+        return self | identity
 
     def symmetric_closure(self):
         if self.c != self.r:
             raise ArithmeticError(
                 "Can't calculate the symmetric closure for non-square matrix."
             )
-        return self.__or__(self.transposed())
+        return self | self.transposed()
 
     def transitive_closure(self):
         if self.c != self.r:
@@ -196,7 +199,7 @@ class Matrix:
             )
         result = self
         for i in range(2, self.r + 1):
-            result = result.__or__(self.__pow__(i))
+            result = result | self.__pow__(i)
         return result
 
     def transitive_closure_using_warshall_alg(self):
@@ -204,17 +207,29 @@ class Matrix:
             raise ArithmeticError(
                 "Can't calculate the transitive closure for non-square matrix."
             )
-        w = self
-        for _ in range(0, self.r + 1):
+        w = self.clone()
+        for n in range(0, self.r):
             p = []
             q = []
-            for i in range(self.c):
-                for j in range(self.r):
-                    if self.m[j][i]:
-                        p.append(j)
-                    if self.m[i][j]:
-                        q.append(i)
-            entries_to_be_one = [(pi, qi) for pi in p for qi in q if self.m[pi][qi]]
+
+            """
+            for ri in range(self.r):
+                if w.m[ri][n]:
+                    p.append(ri)
+            for ci in range(self.c):
+                if w.m[n][ci]:
+                    q.append(ci)
+
+            since we ensured that the matrix is square:
+            """
+
+            for i in range(self.r):
+                if w.m[i][n]:
+                    p.append(i)
+                if w.m[n][i]:
+                    q.append(i)
+
+            entries_to_be_one = [(pi, qi) for pi in p for qi in q]
             for entry in entries_to_be_one:
                 w.m[entry[0]][entry[1]] = True
         return w
